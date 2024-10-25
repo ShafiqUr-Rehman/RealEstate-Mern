@@ -5,7 +5,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: process.env.VITE_API_URL,
+        target: 'https://real-estate-mern-frontend-one.vercel.app/',  //http://localhost:3000
         changeOrigin: true,
         secure: false,
       },
