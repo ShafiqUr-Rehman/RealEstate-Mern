@@ -24,7 +24,7 @@ app.use(cookieParser());
 
 // Connect to MongoDB
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect("mongodb+srv://shafiqurrehmanbscs2022:101325Sh@cluster0.vaqvy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
   .then(() => {
     console.log("MongoDB connected successfully");
   })

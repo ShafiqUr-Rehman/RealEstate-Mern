@@ -28,7 +28,7 @@ export default function Home() {
   ]
 
   useEffect(() => {
-    const fetchOfferListings = async () => {
+    const fetchOfferListings = async () => {  
       try {
         const res = await fetch('/api/listing/get?offer=true&limit=4');
         const data = await res.json();
