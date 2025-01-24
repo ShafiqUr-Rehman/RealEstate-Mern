@@ -6,41 +6,59 @@ import listingRouter from './routes/listing.js';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import path from 'path';
 
 dotenv.config();
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
+// Middleware for CORS
 app.use(cors({
-  origin: ['https://real-estate-mern-frontend-one.vercel.app/','http://localhost:3000'], 
+  origin: [
+    'https://real-estate-mern-frontend-one.vercel.app',
+    'http://localhost:3000',
+  ],
   credentials: true,
-  optionsSuccessStatus: 200, 
+  optionsSuccessStatus: 200,
 }));
 
+// Middleware for JSON parsing and cookies
 app.use(express.json());
 app.use(cookieParser());
 
-// Connect to MongoDB
+// Serve static files from the build folder in production
+const __dirname = path.resolve(); 
+const buildPath = path.join(__dirname, '../client/dist');
+app.use(express.static(buildPath));
+
+
 mongoose
-  .connect("mongodb+srv://shafiqurrehmanbscs2022:101325Sh@cluster0.vaqvy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+  .connect(process.env.MONGO_URI, {
+   
+  })
   .then(() => {
-    console.log("MongoDB connected successfully");
+    console.log('MongoDB connected successfully');
   })
   .catch((err) => {
-    console.error("MongoDB connection error:", err);
+    console.error('MongoDB connection error:', err);
+    process.exit(1); 
   });
 
-// Routes
+
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/listing', listingRouter);
 
-// Error handling middleware
+// Serve frontend (React/Vite SPA) in production
+app.get('*', (req, res) => {
+  res.sendFile(path.join(buildPath, 'index.html'));
+});
+
+// Global Error Handling Middleware
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || 'Internal Server Error';
+  console.error(`Error: ${message}, Status Code: ${statusCode}`);
   return res.status(statusCode).json({
     success: false,
     statusCode,
@@ -48,7 +66,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start server
 app.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);
 });
