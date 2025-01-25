@@ -17,6 +17,7 @@ app.use(cors({
   origin: [
     'https://real-estate-mern-frontend-one.vercel.app',
     'http://localhost:3000',
+    'http://13.61.126.206:3000',
   ],
   credentials: true,
   optionsSuccessStatus: 200,
