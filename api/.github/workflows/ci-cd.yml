@@ -1,4 +1,4 @@
-name: Auto Deploy NodeApplication by using github actions
+name: Auto Deploy NodeApplication 
 
 on:
   push:
