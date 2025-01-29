@@ -5,7 +5,9 @@ FROM node:20
 WORKDIR /client
 
 # Copy package.json and package-lock.json
-COPY package*.json ./
+# COPY package*.json ./  as Window and linus not support * operator
+
+COPY package.json package-lock.json ./
 
 # Install dependencies
 RUN npm install

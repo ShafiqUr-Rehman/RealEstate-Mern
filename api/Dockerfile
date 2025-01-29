@@ -1,11 +1,13 @@
-# Base image 
-FROM node:20
+# Base image           node:alpine3.18
+FROM node:20                     
 
 # Set working directory inside the container
 WORKDIR /server
 
 # Copy package.json and package-lock.json
-COPY package*.json ./
+# COPY package*.json ./   as window cannot suppport ' * '
+COPY package.json package-lock.json ./
+
 
 # Install dependencies
 RUN npm install
